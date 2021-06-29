@@ -28,5 +28,24 @@ def search():
     return res
 
 
+@app.route('/search_ZB', methods=['GET', 'POST'])
+def search_ZB():
+    res = {
+        'code': 400,
+        'data': {},
+        'msg': 'failure'
+    }
+    try:
+        data = dict(request.form)
+        keyword = data['keyword']
+        res['data']['result'] = rank_it2(keyword, ysc=ysc, tyc=tyc, method=bm25_ZB)
+        res['code'] = 200
+        res['msg'] = 'success'
+    except Exception as e:
+        res['msg'] = str(e)
+
+    return res
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=1996)
